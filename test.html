@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Redes UNIR</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .question {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .option {
+      cursor: pointer;
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      font-weight: normal;
+    }
+    .correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test de Redes de Ordenadores - UNIR</h1>
+  <div id="quiz"></div>
+
+  <script>
+    const questions = [
+  {
+    "question": "Selecciona la respuesta falsa respecto a las redes móviles",
+    "options": [
+      "A- Las redes 2G inicialmente no se pensaron para comunicación de datos",
+      "B- Las redes 2G incluyeron posteriormente la conmutación de datos",
+      "C- Las redes 3G son las primeras redes de banda ancha",
+      "D- Las redes 4G son redes de ultra banda ancha, pero con tiempos de latencia grandes"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "El protocolo FTP:",
+    "options": [
+      "Permite el intercambio de ficheros entre dos máquinas",
+      "No permite el manejo de una estructura de carpetas en la máquina remota",
+      "No permite la posibilidad de añadir medidas de autenticación",
+      "Todas las respuestas son correctas"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "El sistema DNS:",
+    "options": [
+      "Es una base de datos distribuida que contiene direcciones MAC y direcciones IP; y un protocolo para consultar la base de datos",
+      "Es una base de datos distribuida que contiene direcciones IP y nombres de dominio",
+      "Es una base de datos local y exclusiva de cada sistema operativo que tiene direcciones IP y nombres de dominio; y un protocolo para consultar la base de datos",
+      "Es una base de datos distribuida que contiene direcciones IP y nombres de dominio; y un protocolo para consultar la base de datos"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "Selecciona la falsa respecto al protocolo HTTP:",
+    "options": [
+      "El protocolo HTTP está basado en un simple mecanismo de solicitud y respuesta",
+      "Cada objeto que se transfiere por la red se realiza por una conexión independiente",
+      "HTTP es un protocolo de transmisión sin estado",
+      "En HTTP/1.0 nunca se libera la conexión"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "La capa de transporte",
+    "options": [
+      "hace posible la comunicación entre dos máquinas, gestionando la conmutación de paquetes en la red",
+      "utiliza los puertos de la capa de enlace",
+      "hace posible la comunicación entre procesos situados, normalmente, en máquinas distintas",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "UDP posee mecanismos para:",
+    "options": [
+      "Control de flujo",
+      "Recuperación de errores",
+      "Control de congestión",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "IP es un protocolo de",
+    "options": [
+      "Nivel de red",
+      "Nivel de transporte",
+      "Nivel de enlace",
+      "Nivel de aplicación"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Los algoritmos de encaminamiento a nivel de red que se basan en que cada nodo es el responsable de calcular sus propias tablas usando únicamente información local se denominan:",
+    "options": [
+      "Algoritmos de encaminamiento centralizados",
+      "Algoritmos de encaminamiento aislados",
+      "Algoritmos de encaminamiento distribuidos",
+      "Algoritmos de encaminamiento jerárquicos"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "En la trama de la capa de enlace, el campo que contiene información de control como direccionamiento y aparece al inicio de la trama, se denomina:",
+    "options": [
+      "Datos",
+      "Encabezado",
+      "Tráiler",
+      "Protocol Routing Address"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Los protocolos de control de acceso al medio con acceso aleatorio:",
+    "options": [
+      "Son los protocolos de sondeo o polling, entre otros",
+      "Son los que dividen el canal en distintas frecuencias, instantes de tiempo o código se denominan",
+      "Son aquellos donde cada nodo intenta transmitir y si hay colisión con otras transmisiones, espera un tiempo aleatorio antes de retransmitir",
+      "Son aquellos que funcionan en base al paso de testigo"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "La topología de red en la que un solo cableado conecta todos los elementos se denomina:",
+    "options": [
+      "Topología en estrella",
+      "Topología en malla",
+      "Topología en bus",
+      "Topología en árbol"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Selecciona la verdadera:",
+    "options": [
+      "Una topología de malla completa necesitará siempre 2*N enlaces punto a punto",
+      "No se pueden mezclar redes con diferente topología",
+      "Una red puede tener una topología física distinta a la topología lógica",
+      "Ninguna es cierta"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Los requisitos que debe cumplir un sistema para considerarse seguro son:",
+    "options": [
+      "Confidencialidad y Disponibilidad",
+      "Confidencialidad, Privacidad y Ocultamiento de la información",
+      "Confidencialidad, Integridad, Disponibilidad, Autenticación, No repudio",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Cuando se impide la comunicación inutilizando el sistema, bien atacando el canal de comunicación, bien a los sistemas que intervienen en ella, atacando por tanto a su disponibilidad, se está hablando de un ataque por:",
+    "options": [
+      "Interceptación",
+      "Modificación",
+      "Interrupción",
+      "Fabricación"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Selecciona la falsa respecto a IP ESP:",
+    "options": [
+      "La estructura de ESP consta de una parte no cifrada y otra parte cifrada",
+      "Se puede usar para cifrar un paquete a nivel de transporte (TCP o UDP)",
+      "Se puede utilizar en modo transporte o en modo túnel",
+      "Es un protocolo a nivel de enlace"
+    ],
+    "answer": 3
+  },{
+    "question": "Cuando el contenido de la información en tránsito no debe estar accesible a terceras personas es",
+    "options": [
+      "Confidencialidad",
+      "Integridad",
+      "No repudio",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Un puente o bridge",
+    "options": [
+      "Opera a nivel de la capa física (1 del modelo OSI)",
+      "Permite crear un único dominio de colisión",
+      "Un ejemplo de dispositivo puente son los concentradores o hubs",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Los acuses de recibo (\"ACKs\")",
+    "options": [
+      "Consumen un importante ancho de banda en el proceso de comunicación",
+      "Se utilizan en UDP para la confirmación de la recepción de datagramas",
+      "Se utilizan en UDP para la confirmación de la recepción de segmentos",
+      "Se utilizan en TCP para la confirmación de la recepción de segmentos"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "Los mensajes de solicitud DHCP",
+    "options": [
+      "Se transportan mediante UDP",
+      "Viajan en un datagrama IP con la dirección IP de destino del router de conexión a Internet de nuestra red local",
+      "Viajan en un datagrama IP con la dirección IP origen del servidor DNS",
+      "Todas las anteriores son correctas"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "En la criptografía de clave pública",
+    "options": [
+      "Cada interlocutor posee dos claves",
+      "Cada interlocutor posee la clave secreta del otro",
+      "Se utiliza la misma clave para cifrar que para descifrar",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Se define un \"socket\" como",
+    "options": [
+      "Una medida del rendimiento de un canal de datos a nivel de aplicación en el modelo OSI",
+      "Una medida de protección, en la que se envuelven los datos para evitar su inspección por partes no autorizadas durante su transmisión",
+      "Una interfaz software que permite a los procesos de un Sistema Operativo enviar y recibir mensajes a/de la red",
+      "Un enchufe al que se conecta un ordenador a una red mediante un conector RJ-455"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Cuando se utiliza el protocolo HTTP",
+    "options": [
+      "El servidor ha de usar siempre el puerto 80 en la máquina destino, si lo hace en el puerto 8080, dejará de estar accesible para los clientes",
+      "El servidor reconoce cuando un cliente le ha solicitado anteriormente el mismo archivo",
+      "El servidor envía los archivos solicitados al cliente almacenando la información del estado del cliente",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "Acerca de los servicios de entrega fiable de la capa de enlace",
+    "options": [
+      "Se suelen usar para enlaces cableados, que tienen una baja tasa de errores de bit",
+      "Están siempre activados, y no existen protocolos de enlace no fiables",
+      "Sólo se pueden usar si a nivel de transporte (por ej. TCP) utiliza un servicio fiable",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "En el encaminamiento desde el origen",
+    "options": [
+      "Son las estaciones finales y no los nodos intermedios quienes deben establecer la ruta de transmisión",
+      "Se calcula desde la estación origen la ruta óptima de forma estática, realizando difusión de mensajes únicamente al primer nivel de nodos conectados a la misma",
+      "Se establece la ruta desde la estación origen, sin necesidad de realizar la técnica de difusión de mensajes por inundación de la red",
+      "Todas las anteriores son correctas"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Un Punto de Acceso WiFi",
+    "options": [
+      "Actúa como puente (bridge) transparente entre redes 802.11 y 802.3",
+      "Sólo admite una única conexión de un dispositivo, para extender su cobertura WiFi",
+      "Funciona como pasarela o Gateway, operando en los niveles 4 a 7 de OSI",
+      "Todas las anteriores son correctas"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Selecciona la respuesta verdadera",
+    "options": [
+      "El uso de WiMAX se encuadra dentro de las redes WMAN.",
+      "El uso de Bluetooth se encuadra dentro de las redes LAN",
+      "El uso de redes móviles (2G, 3G, 4G, etc ) se encuadra dentro de las redes WLAN",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Un socket:",
+    "options": [
+      "es un proceso que permite la comunicación entre dos puertos de una misma máquina",
+      "es un elemento físico que tiene una tarjeta de red que permite la comunicación con otras máquinas",
+      "es una abstracción que representa, en una máquina local, la conexión con otra máquina",
+      "Ninguna de las anteriores es correcta"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "El sistema DNS puede proporcionar servicios de:",
+    "options": [
+      "Alias de host, balanceado de carga y envío de correos electrónicos",
+      "Balanceado de carga, traducción ARP",
+      "Alias de host, alias de servidor de correo electrónico y balanceado de carga",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "El protocolo HTTP/2 utiliza en las capas inferiores:",
+    "options": [
+      "DNS en capa de transporte y TCP/IP en capa de red",
+      "UDP en capa de transporte e IP en capa de red",
+      "TCP en capa de transporte e IP en capa de red",
+      "Todas son correctas"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Selecciona la respuesta falsa respecto a una petición HTTP:",
+    "options": [
+      "URI es una especificación inequívoca del recurso que se solicita en un servidor",
+      "El código de estado indica el resultado de una solicitud",
+      "En una solicitud no se puede especificar el formato de la información que se espera recibir",
+      "En la respuesta se permite una cadena de texto con información descriptiva del resultado"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "La capa de transporte",
+    "options": [
+      "hace posible la comunicación entre dos máquinas, gestionando la conmutación de paquetes en la red",
+      "utiliza los puertos de la capa de enlace",
+      "hace posible la comunicación entre procesos situados, normalmente, en máquinas distintas",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "UDP posee mecanismos para:",
+    "options": [
+      "Control de flujo",
+      "Recuperación de errores",
+      "Control de congestión",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "La técnica de conmutación que divide la información en fragmentos sin establecer una conexión previa entre origen y destino",
+    "options": [
+      "Conmutación de paquetes mediante datagramas",
+      "Conmutación de paquetes por circuitos virtuales",
+      "Conmutación de circuitos",
+      "Multiplexación directa"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "Los algoritmos de encaminamiento a nivel de red que se basan en que cada nodo es el responsable de calcular sus propias tablas usando únicamente información local se denominan:",
+    "options": [
+      "Algoritmos de encaminamiento centralizados",
+      "Algoritmos de encaminamiento aislados",
+      "Algoritmos de encaminamiento distribuidos",
+      "Algoritmos de encaminamiento jerárquicos"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "En la trama de la capa de enlace, el campo que contiene datos de control sumados al final de la trama que sirven para generar una estructura de comunicación, se denomina:",
+    "options": [
+      "Datos",
+      "Tráiler",
+      "Encabezado",
+      "Protocol Ending Checksum"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Selecciona la falsa:",
+    "options": [
+      "La dirección MAC es -al menos en principio- única y permanente para cada adaptador de red",
+      "Las direcciones MAC no tienen dirección de difusión",
+      "Se pueden traducir direcciones MAC a IP utilizando el protocolo ARP",
+      "La dirección MAC de destino se introduce en la trama"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "La topología de red en la que todos los elementos se conectan con enlaces punto a punto a un dispositivo de interconexión central, se denomina:",
+    "options": [
+      "Topología en estrella",
+      "Topología en malla",
+      "Topología en bus",
+      "Topología en árbol"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "La Dirección IP 5.105.25.69 es una dirección de tipo:",
+    "options": [
+      "Clase A",
+      "Clase B",
+      "Clase C",
+      "Ninguna de las anteriores"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "La característica de No Repudio de una comunicación implica:",
+    "options": [
+      "El firewall del receptor no puede bloquear este tipo de paquetes",
+      "El cifrado permite leer la información en el tránsito",
+      "Se ha de dejar constancia de que ambas partes (emisor y receptor) han intervenido en la comunicación",
+      "El receptor puede negar haber recibido el mensaje, pero el emisor no puede negar haberlo enviado"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "Selecciona la verdadera:",
+    "options": [
+      "Si un emisor cifra el mensaje utilizando su clave privada logrará confidencialidad en el envío",
+      "Si un emisor cifra el mensaje utilizando la clave pública del receptor logrará confidencialidad en el envío",
+      "Si un emisor cifra el mensaje utilizando su clave pública, cualquiera podrá descifrar su mensaje",
+      "El emisor debe transmitir su clave privada al receptor para que éste pueda descifrar los mensajes recibidos"
+    ],
+    "answer": 1
+  }
+]
+
+
+    const quizDiv = document.getElementById('quiz');
+
+    questions.forEach((q, i) => {
+      const container = document.createElement('div');
+      container.classList.add('question');
+      const title = document.createElement('p');
+      title.textContent = `${i + 1}. ${q.question}`;
+      container.appendChild(title);
+
+      q.options.forEach((opt, j) => {
+        const btn = document.createElement('div');
+        btn.textContent = opt;
+        btn.classList.add('option');
+        btn.onclick = () => {
+          const allOptions = container.querySelectorAll('.option');
+          allOptions.forEach((el, k) => {
+            el.onclick = null; // desactivar más clics
+            if (k === q.answer) el.classList.add('correct');
+            else if (k === j) el.classList.add('incorrect');
+          });
+        };
+        container.appendChild(btn);
+      });
+
+      quizDiv.appendChild(container);
+    });
+  </script>
+</body>
+</html>
