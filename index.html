@@ -41,7 +41,10 @@
 </head>
 
 <body>
-  <h1>Test de Redes de Ordenadores - UNIR</h1>
+  <h1>
+    Test de Redes de Ordenadores - UNIR
+    <span id="score" style="font-size: 0.6em; margin-left: 10px;"></span>
+  </h1>
   <div id="quiz"></div>
 
   <script>
@@ -1233,32 +1236,52 @@
     ]
 
 
-    const quizDiv = document.getElementById('quiz');
+    const scoreSpan = document.getElementById('score');
+  const quizDiv = document.getElementById('quiz');
 
-    questions.forEach((q, i) => {
-      const container = document.createElement('div');
-      container.classList.add('question');
-      const title = document.createElement('p');
-      title.textContent = `${i + 1}. ${q.question}`;
-      container.appendChild(title);
+  let correctCount = 0;
+  let answeredCount = 0;
 
-      q.options.forEach((opt, j) => {
-        const btn = document.createElement('div');
-        btn.textContent = opt;
-        btn.classList.add('option');
-        btn.onclick = () => {
-          const allOptions = container.querySelectorAll('.option');
-          allOptions.forEach((el, k) => {
-            el.onclick = null; // desactivar más clics
-            if (k === q.answer) el.classList.add('correct');
-            else if (k === j) el.classList.add('incorrect');
-          });
-        };
-        container.appendChild(btn);
-      });
+  function updateScore(total) {
+    const percent = ((correctCount / total) * 100).toFixed(1);
+    scoreSpan.textContent = `${correctCount} / ${answeredCount} correctas (${percent}%)`;
+  }
 
-      quizDiv.appendChild(container);
+  questions.forEach((q, i) => {
+    const container = document.createElement('div');
+    container.classList.add('question');
+    const title = document.createElement('p');
+    title.textContent = `${i + 1}. ${q.question}`;
+    container.appendChild(title);
+
+    let alreadyAnswered = false;
+
+    q.options.forEach((opt, j) => {
+      const btn = document.createElement('div');
+      btn.textContent = opt;
+      btn.classList.add('option');
+      btn.onclick = () => {
+        if (alreadyAnswered) return;
+        alreadyAnswered = true;
+
+        const allOptions = container.querySelectorAll('.option');
+        allOptions.forEach((el, k) => {
+          el.onclick = null;
+          if (k === q.answer) el.classList.add('correct');
+          else if (k === j) el.classList.add('incorrect');
+        });
+
+        answeredCount++;
+        if (j === q.answer) correctCount++;
+        updateScore(questions.length);
+      };
+      container.appendChild(btn);
     });
+
+    quizDiv.appendChild(container);
+  });
+
+  updateScore(questions.length);
   </script>
 </body>
 
